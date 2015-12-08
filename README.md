@@ -5,9 +5,9 @@ See https://facebook.github.io/react/docs/update.html for the backstory on why t
 
 ## Why?
 
-The `update()` function from React can be really helpful when dealing with immutable state trees in Redux. I found the syntax wacky ad confusing though and thought there must be a better way.
+The `update()` function from React can be really helpful when dealing with immutable state trees in Redux. I found the syntax of mongo style `$` prefixed operation keys to be confusing though and thought there must be a better way.
 
-You can think of this library as very similar to React's `update()` but the only possible transform is `$apply`. Wherever you need a computed value, you provide a function instead and that function will be called with the current value at that point in the state tree, the functions return value becomes the new value in the state tree. Simple but powerful and composable.
+You can think of this library as very similar to React's `update()` but the only possible transform is `$apply`. Wherever you need a computed value, you provide a function instead and that function will be called with the current value at that point in the state tree, the function's return value becomes the new value placed back into the state tree. Simple but powerful and composable.
 
 
 ## The API
@@ -48,6 +48,7 @@ A counter implementation...
     // => {count: 2}
 
 Updating arrays...
+_the mutation here looks scary but modifiers always receive a shallow clone of the value so mutations are 'safe'_
 
     const state = {people: ['Andy', 'Ashley']}
     transform(state, {
@@ -68,7 +69,7 @@ Updating nested objects...
 
 Using currying for applying nested transforms...
 
-  const state = {person: {name: {first: 'Andy', last: 'Kent'}}}
+    const state = {person: {name: {first: 'Andy', last: 'Kent'}}}
     transform(state, {
       person: {
         name: transform({first: 'Nick'})
@@ -80,13 +81,13 @@ Using currying for applying nested transforms...
 
 ## Pro Mode
 
-**OK so that's all nice but now things get awesome!**
+**OK so that's nice and all but now things get awesome!**
 
 There are some optional helper functions that make common operations much clearer.
 
 For example, adding to a list...
 
-    import { push } from 'transform/helpers'
+    import transform, { push } from 'immutable-transform'
 
     const state = {people: ['Andy']}
     transform(state, {
@@ -96,7 +97,7 @@ For example, adding to a list...
 
 removing a key...
 
-    import { remove } from 'transform/helpers'
+    import transform, { remove } from 'immutable-transform'
 
     const state = {people: {andy: 'Andy Kent', ashley: 'Ashley St Pier'}}
     transform(state, {
@@ -106,7 +107,7 @@ removing a key...
 
 inserting a key/value...
 
-    import { insert } from 'transform/helpers'
+    import transform, { insert } from 'immutable-transform'
 
     const state = {people: {andy: 'Andy Kent'}}
     transform(state, {
