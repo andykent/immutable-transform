@@ -18,7 +18,7 @@ describe('transform()', () => {
     expect(result, 'to equal', {test: 2})
   })
 
-  describe('root level changes', () => {
+  describe('root level object changes', () => {
     it('returns the source object merged with change when the changes are non-function values', () => {
       const source = {test: 1}
       const changes = {test: 2, foo: 'bar', list: [1, 2]}
@@ -60,6 +60,26 @@ describe('transform()', () => {
       }
       const result = transform(source, changes)
       expect(result, 'to equal', {foo: 1})
+    })
+  })
+
+  describe('root level array changes', () => {
+    it('returns the source array merged with change when the changes are non-function values', () => {
+      const source = [{test: 1}]
+      const changes = {0: {test: 2, foo: 'bar', list: [1, 2]}}
+      const result = transform(source, changes)
+      expect(result, 'to equal', [{
+        test: 2,
+        foo: 'bar',
+        list: [1, 2]
+      }])
+    })
+
+    it('calls functions and inserts their return value into the result', () => {
+      const source = [{test: 1}]
+      const changes = {0: {test: (v) => v + 1}}
+      const result = transform(source, changes)
+      expect(result, 'to equal', [{ test: 2 }])
     })
   })
 

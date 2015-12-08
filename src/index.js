@@ -5,7 +5,10 @@ function union (a, b) {
 function computeChange (change, source) {
   switch (typeof change) {
     case 'function':
-      const oldValue = (typeof source === 'object' ? Object.assign({}, source) : source)
+      let oldValue = source
+      if (typeof source === 'object') {
+        oldValue = Array.isArray(source) ? source.slice() : Object.assign({}, source)
+      }
       const newValue = change.length === 0 ? change() : change(oldValue)
       return newValue
     case 'object':
@@ -19,6 +22,7 @@ function computeChanges (changes, source) {
   if (typeof source !== 'object') return changes
   if (typeof changes !== 'object') return source
   const keys = union(Object.keys(source), Object.keys(changes))
+  let base = Array.isArray(source) ? [] : {}
   return keys.reduce((s, key) => {
     const value = source[key]
     const change = changes[key]
@@ -28,7 +32,7 @@ function computeChanges (changes, source) {
       s[key] = computeChange(change, value)
     }
     return s
-  }, {})
+  }, base)
 }
 
 export default function update (source, changes) {
