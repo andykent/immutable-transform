@@ -41,9 +41,9 @@ export default function update (source, changes) {
   return computeChange(changes, source)
 }
 
-export function push (value) {
+export function push (...values) {
   return (x) => {
-    x.push(value)
+    x.push(...values)
     return x
   }
 }

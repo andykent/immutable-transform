@@ -7,6 +7,11 @@ describe('push()', () => {
     const pusher = push(2)
     expect(pusher([1]), 'to equal', [1, 2])
   })
+
+  it('pushes multiple arguments onto an array', () => {
+    const pusher = push(2, 3, 4)
+    expect(pusher([1]), 'to equal', [1, 2, 3, 4])
+  })
 })
 
 describe('remove()', () => {
