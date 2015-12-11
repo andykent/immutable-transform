@@ -5,12 +5,12 @@ function union (a, b) {
 function computeChange (change, source) {
   switch (typeof change) {
     case 'function':
-      let oldValue = source
+      if (change.length === 0) return change()
+      var oldValue = source
       if (typeof source === 'object') {
         oldValue = Array.isArray(source) ? source.slice() : Object.assign({}, source)
       }
-      const newValue = change.length === 0 ? change() : change(oldValue)
-      return newValue
+      return change(oldValue)
     case 'object':
       return computeChanges(change, source)
     default:
@@ -60,4 +60,8 @@ export function insert (key, value) {
     x[key] = value
     return x
   }
+}
+
+export function set (value) {
+  return () => value
 }

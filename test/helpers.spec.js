@@ -1,6 +1,6 @@
 import expect from 'unexpected'
 
-import { push, remove, insert } from '../src/index'
+import { push, remove, insert, set } from '../src/index'
 
 describe('push()', () => {
   it('pushes onto an array', () => {
@@ -25,5 +25,12 @@ describe('insert()', () => {
   it('adds a key/value to an object', () => {
     const inserter = insert('bar', 2)
     expect(inserter({foo: 1}), 'to equal', {foo: 1, bar: 2})
+  })
+})
+
+describe('set()', () => {
+  it('completly replaces the object', () => {
+    const setter = set(['a'])
+    expect(setter([1]), 'to equal', ['a'])
   })
 })
