@@ -2,15 +2,17 @@ function union (a, b) {
   return a.concat(b.filter((item) => a.indexOf(item) < 0))
 }
 
+function shallowCopy (x) {
+  if (Array.isArray(x)) return x.concat()
+  if (x && typeof x === 'object') return Object.assign(new x.constructor(), x)
+  return x
+}
+
 function computeChange (change, source) {
   switch (typeof change) {
     case 'function':
       if (change.length === 0) return change()
-      var oldValue = source
-      if (typeof source === 'object') {
-        oldValue = Array.isArray(source) ? source.slice() : Object.assign({}, source)
-      }
-      return change(oldValue)
+      return change(shallowCopy(source))
     case 'object':
       return computeChanges(change, source)
     default:
