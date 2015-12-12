@@ -23,8 +23,7 @@ function computeChange (change, source) {
 function computeChanges (changes, source) {
   if (typeof source !== 'object') return changes
   if (typeof changes !== 'object') return source
-  const keys = union(Object.keys(source), Object.keys(changes))
-  let base = Array.isArray(source) ? [] : {}
+  const keys = Object.keys(changes)
   return keys.reduce((s, key) => {
     const value = source[key]
     const change = changes[key]
@@ -34,7 +33,7 @@ function computeChanges (changes, source) {
       s[key] = computeChange(change, value)
     }
     return s
-  }, base)
+  }, shallowCopy(source))
 }
 
 export default function update (source, changes) {

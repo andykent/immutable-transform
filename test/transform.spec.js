@@ -68,6 +68,8 @@ describe('transform()', () => {
       const source = [{test: 1}]
       const changes = {0: {test: 2, foo: 'bar', list: [1, 2]}}
       const result = transform(source, changes)
+      expect(source, 'not to be', result)
+      expect(source[0], 'not to be', result[0])
       expect(result, 'to equal', [{
         test: 2,
         foo: 'bar',
